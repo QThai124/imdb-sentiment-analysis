@@ -38,7 +38,6 @@ Các mô hình được đánh giá trên cùng tập kiểm tra để so sánh 
 | LSTM | 0.8408 | 0.8853 | 0.7832 | 0.8311 | 16.57 |
 | Simple RNN | 0.8107 | 0.8370 | 0.7717 | 0.8030 | 28.03 |
 
-*Lưu ý: Kết quả phụ thuộc vào cấu hình mô hình, quá trình tiền xử lý và môi trường chạy thực nghiệm.*
 
 ## 5. Nhận xét
 
@@ -50,5 +49,18 @@ Các mô hình được đánh giá trên cùng tập kiểm tra để so sánh 
 - Các đường cong huấn luyện và đánh giá của RNN, LSTM có dấu hiệu chênh lệch giữa kết quả huấn luyện và validation. Có thể cần điều chỉnh số epoch, regularization hoặc kiến trúc mô hình để cải thiện khả năng tổng quát hóa.
 
 
+## 6. Vì sao Logistic Regression tốt hơn LSTM?
+
+Trong thực nghiệm này, Logistic Regression đạt kết quả tốt hơn LSTM trên tập dữ liệu IMDB: Accuracy đạt **90,51%** và F1-score đạt **0,9055**, trong khi LSTM lần lượt đạt **84,08%** và **0,8311**. Sự khác biệt này có thể được giải thích bởi một số nguyên nhân:
+
+- **TF-IDF phù hợp với bài toán phân loại đánh giá phim:** Phương pháp TF-IDF biểu diễn văn bản dựa trên mức độ quan trọng của các từ và cụm từ. Trong đánh giá cảm xúc, những từ như *excellent*, *terrible*, *amazing* hay *boring* thường mang thông tin hữu ích để xác định cảm xúc. Logistic Regression có thể khai thác hiệu quả những đặc trưng này mà không cần học các biểu diễn văn bản phức tạp.
+
+- **LSTM cần được huấn luyện và tối ưu phù hợp:** Mặc dù LSTM có khả năng học các quan hệ tuần tự và ngữ cảnh trong văn bản, mô hình có nhiều tham số cần tối ưu hơn Logistic Regression. Hiệu quả của LSTM phụ thuộc vào các yếu tố như kiến trúc mạng, kích thước embedding, độ dài chuỗi đầu vào, regularization và siêu tham số huấn luyện.
+
+- **Khả năng tổng quát hóa:** Kết quả huấn luyện và validation của LSTM có sự chênh lệch ở một số epoch, cho thấy mô hình có dấu hiệu overfitting. Điều này có thể khiến LSTM học tốt các mẫu trong tập huấn luyện nhưng chưa khái quát tốt trên dữ liệu chưa thấy.
+
+- **Độ phức tạp không đồng nghĩa với hiệu quả cao hơn:** Với dữ liệu IMDB và cấu hình được sử dụng trong dự án, các đặc trưng TF-IDF kết hợp với Logistic Regression đã cung cấp đủ thông tin để phân loại cảm xúc hiệu quả. Vì vậy, mô hình đơn giản hơn vẫn có thể vượt trội so với mô hình học sâu khi dữ liệu, cách biểu diễn và quá trình tối ưu chưa phát huy hết lợi thế của mô hình phức tạp.
+
+**Kết luận:** Kết quả thực nghiệm cho thấy Logistic Regression với TF-IDF là lựa chọn hiệu quả hơn LSTM trong cấu hình hiện tại, cả về chất lượng phân loại lẫn chi phí huấn luyện. Tuy nhiên, điều này không có nghĩa Logistic Regression luôn tốt hơn LSTM; việc điều chỉnh kiến trúc và siêu tham số, cũng như cải thiện quá trình tiền xử lý, có thể giúp LSTM đạt kết quả tốt hơn.
 
 
